@@ -4,7 +4,6 @@ import (
 	"os"
 
 	"github.com/brettalbano/DadGpt/initializers"
-	"github.com/brettalbano/DadGpt/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
 )
@@ -27,12 +26,11 @@ func main() {
 
 	// Configure app
 	app.Static("/", "./public")
-	app.Use(middleware.RequireAuth)
+	// app.Use(middleware.RequireAuth)
 
 	// Routes.
 	Routes(app)
 
 	// Start App.
 	app.Listen(":" + os.Getenv("PORT"))
-
 }

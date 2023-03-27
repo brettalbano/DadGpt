@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	UserName  string
-	Password  string
-	OpenAiKey string
+	UserName  string `json:"username" gorm:"unique"`
+	Password  string `json:"password"`
+	OpenAiKey string `json:"-"`
 }
