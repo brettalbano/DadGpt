@@ -1,0 +1,6 @@
+PORT=<Port for backend Server>
+DB_PATH="<MySQL Username>:<MySQL Password>@tcp(<MySQL Address>:<Port>)/<DB Name>?charset=utf8mb4&parseTime=True&loc=Local"
+COST=<Cost value for JWT>
+SECRET=<Secret Key for bcrypt>
+OPENAIKEY=<OPEN AI KEY>
+BASEURL=<Backend Server IP>:<Backend Server Port>
