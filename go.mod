@@ -25,6 +25,7 @@ require (
 	github.com/philhofer/fwd v1.1.1 // indirect
 	github.com/radovskyb/watcher v1.0.7 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
+	github.com/sashabaranov/go-openai v1.5.7 // indirect
 	github.com/savsgio/dictpool v0.0.0-20221023140959-7bf2e61cea94 // indirect
 	github.com/savsgio/gotils v0.0.0-20220530130905-52f3993e8d6d // indirect
 	github.com/tinylib/msgp v1.1.6 // indirect

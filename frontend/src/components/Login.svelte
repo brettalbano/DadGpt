@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
     import { Login } from "../api/login";
     import { goto } from "$app/navigation";
     let username = '';
@@ -10,10 +10,11 @@
         Login(username, password).then(
             response => {
                 message = "Succesful Login"
-                goto('/creation')
+                goto('/dadgpt/'.concat(response["UserId"]))
             }
         ).catch(error => {
             message = "Unsuccesful Login"
+            alert(message)
         })
     }
 
@@ -24,7 +25,6 @@
         <p>{message}</p>
         <input type="text" name="username" placeholder="Username" bind:value={username}>
         <input type="password" name="password" placeholder="Password" bind:value={password}>
-        <!-- <button on:click={() => Login(username, password)}>Login</button> -->
         <button type="submit">Login</button>
     </form>
 

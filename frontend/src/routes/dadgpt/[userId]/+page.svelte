@@ -1,5 +1,7 @@
-<script>
-	import ChatMessage from '../../components/ChatMessage.svelte';
+<script lang='ts'>
+    import { page } from '$app/stores';
+	import ChatMessage from '../../../components/ChatMessage.svelte';
+    import { ConverseWithDad } from '../../../api/conversation';
 
 	let nameMe='Me';
 	let profilePicMe='https://p0.pikist.com/photos/474/706/boy-portrait-outdoors-facial-men-s-young-t-shirt-hair-person-thumbnail.jpg';
@@ -15,13 +17,26 @@
     ]
 
     let newMessage = ''
-    let currentMessageId = 427
+    let currentMessageId = 1
     function HandleClick() {
         let newMessageStruct = {
-            "messageId": currentMessageId++,
-            "message": newMessage,
-            "sentByMe": true,
+            messageId: currentMessageId++,
+            message: newMessage,
+            sentByMe: true,
+
+            // "messageId": currentMessageId++,
+            // "message": newMessage,
+            // "sentByMe": true,
         }
+        ConverseWithDad(newMessageStruct, Number($page.params['userId'])).then(
+            response => {
+                todayMessages = [...todayMessages, {
+                    messageId: currentMessageId++,
+                    message: response['message'],
+                    sentByMe: false
+                }]
+            }
+        )
 
         todayMessages = [...todayMessages, newMessageStruct]
 
