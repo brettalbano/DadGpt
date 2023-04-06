@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/brettalbano/DadGpt/controllers"
-	"github.com/brettalbano/DadGpt/middleware"
+	"DadGpt/controllers"
+	"DadGpt/middleware"
+
 	"github.com/gofiber/fiber/v2"
 )
 

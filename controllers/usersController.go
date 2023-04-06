@@ -5,8 +5,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/brettalbano/DadGpt/initializers"
-	"github.com/brettalbano/DadGpt/models"
+	"DadGpt/initializers"
+	"DadGpt/models"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"

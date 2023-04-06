@@ -1,4 +1,4 @@
-module github.com/brettalbano/DadGpt
+module DadGpt
 
 go 1.20
 

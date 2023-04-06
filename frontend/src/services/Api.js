@@ -1,12 +1,14 @@
 import axios from "axios";
+import { env } from '$env/dynamic/public'
 
 // Create a instance of axios to use the same base url.
 const axiosAPI = axios.create({
-  baseURL : "http://127.0.0.1:3000"
+  baseURL : "http://" + env.PUBLIC_HOSTNAME + ":443"
 });
 
 // implement a method to execute all the request from here.
 const apiRequest = (/** @type {string} */ method, /** @type {String} */ url, /** @type {any} */ request) => {
+    console.log("baseURL", axiosAPI.defaults.baseURL);
     const headers = {
         "authorization": "",
         "Access-Control-Allow-Origin": "*",

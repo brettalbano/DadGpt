@@ -3,7 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/brettalbano/DadGpt/initializers"
+	"DadGpt/initializers"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
 )
