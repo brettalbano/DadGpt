@@ -2,23 +2,25 @@ import axios from "axios";
 import { env } from '$env/dynamic/public'
 
 // Create a instance of axios to use the same base url.
+let instanceBaseURL = "http://" + env.PUBLIC_HOSTNAME + ":443";
 const axiosAPI = axios.create({
-  baseURL : "http://" + env.PUBLIC_HOSTNAME + ":443"
+  baseURL : instanceBaseURL
 });
 
 // implement a method to execute all the request from here.
-const apiRequest = (/** @type {string} */ method, /** @type {String} */ url, /** @type {any} */ request) => {
-    console.log("baseURL", axiosAPI.defaults.baseURL);
+const apiRequest = (method: string, url: string, request: any) => {
     const headers = {
-        "authorization": "",
-        "Access-Control-Allow-Origin": "*",
+        // "authorization": "",
+        "Access-Control-Allow-Origin": '*',
+        'Content-Type': 'application/json',
     };
     //using the axios instance to perform the request that received from each http method
     return axiosAPI({
         method,
         url,
         data: request,
-        headers
+        headers,
+
       }).then(res => {
         return Promise.resolve(res.data);
       })
@@ -28,19 +30,19 @@ const apiRequest = (/** @type {string} */ method, /** @type {String} */ url, /**
 };
 
 // function to execute the http get request
-const get = (/** @type {any} */ url, /** @type {any} */ request) => apiRequest("get",url,request);
+const get = (url: any,  request: any) => apiRequest("get",url,request);
 
 // function to execute the http delete request
-const deleteRequest = (/** @type {any} */ url, /** @type {any} */ request) =>  apiRequest("delete", url, request);
+const deleteRequest = (url: any, request: any) =>  apiRequest("delete", url, request);
 
 // function to execute the http post request
-const post = (/** @type {any} */ url, /** @type {any} */ request) => apiRequest("post", url, request);
+const post = (url: any, request: any) => apiRequest("post", url, request);
 
 // function to execute the http put request
-const put = (/** @type {any} */ url, /** @type {any} */ request) => apiRequest("put", url, request);
+const put = (url: any, request: any) => apiRequest("put", url, request);
 
 // function to execute the http path request
-const patch = (/** @type {any} */ url, /** @type {any} */ request) =>  apiRequest("patch", url, request);
+const patch = (url: any, request: any) =>  apiRequest("patch", url, request);
 
 // expose your method to other services or actions
 const Api ={

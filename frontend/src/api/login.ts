@@ -1,6 +1,6 @@
 import Api from "../services/Api";
 
-export const Login = async (/** @type {String} */ username, /** @type {String} */ password) => {
+export const Login = async (username: string, password: string) => {
     try {
         let request = {
             "username": username,

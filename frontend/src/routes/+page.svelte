@@ -8,6 +8,7 @@
         <h1>Welcome to DadGPT</h1>
     </div>
     <Login />
+    <a href="/dadgpt/1">Demo DadGPT</a>
 </main>
 
 <style>

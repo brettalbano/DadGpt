@@ -1,40 +1,53 @@
 <script lang='ts'>
+    const SYSTEM_REQUEST = "system";
+    const USER_REQUEST = "user"
     import { page } from '$app/stores';
 	import ChatMessage from '../../../components/ChatMessage.svelte';
     import { ConverseWithDad } from '../../../api/conversation';
 
 	let nameMe='Me';
-	let profilePicMe='https://p0.pikist.com/photos/474/706/boy-portrait-outdoors-facial-men-s-young-t-shirt-hair-person-thumbnail.jpg';
+	// let profilePicMe='https://p0.pikist.com/photos/474/706/boy-portrait-outdoors-facial-men-s-young-t-shirt-hair-person-thumbnail.jpg';
+    let profilePicMe='../../../../icons8-bart-simpson-96.png'
 
 	let nameChatPartner='Dad GPT';
-	let profilePicChatPartner='https://storage.needpix.com/rsynced_images/male-teacher-cartoon.jpg';
+	// let profilePicChatPartner='https://storage.needpix.com/rsynced_images/male-teacher-cartoon.jpg';
+    // let profilePicChatPartner='https://icons8.com/icon/ow5OVTsMsFC6/abraham-simpson'
+    let profilePicChatPartner='../../../../icons8-abraham-simpson-96.png'
 
-    let todayMessages = [{
+    const welcomeMessage = {
         "messageId": 0,
         "message": "Welcome! What topic would you like me to create a joke for you to roll your eyes on?",
-        "sentByMe": false,
-        }
-    ]
+        "role": SYSTEM_REQUEST,
+    }
+    let todayMessages: any[] = [];
+    let sessionMessageHistory: any[] = [];
 
     let newMessage = ''
     let currentMessageId = 1
     function HandleClick() {
+
+        sessionMessageHistory = [...sessionMessageHistory, {
+            role: USER_REQUEST,
+            content: newMessage,
+        }]
         let newMessageStruct = {
             messageId: currentMessageId++,
-            message: newMessage,
-            sentByMe: true,
-
-            // "messageId": currentMessageId++,
-            // "message": newMessage,
-            // "sentByMe": true,
+            messages: sessionMessageHistory,
         }
         ConverseWithDad(newMessageStruct, Number($page.params['userId'])).then(
             response => {
+                sessionMessageHistory = [...sessionMessageHistory, {
+                    role: SYSTEM_REQUEST,
+                    content: response['message'],
+                }]
                 todayMessages = [...todayMessages, {
                     messageId: currentMessageId++,
-                    message: response['message'],
-                    sentByMe: false
+                    messages: sessionMessageHistory,
                 }]
+            }
+        ).catch(
+            error => {
+                alert(error.message)
             }
         )
 
@@ -89,18 +102,35 @@
             <img class="contacts-img" src={profilePicChatPartner} alt="profilePic">
             <span class="contacts-name">{nameChatPartner}</span>
             <span class="mr-auto"></span>
+            <div>
+                <div>
+                    <a target="_blank" href="https://icons8.com/icon/ow5OVTsMsFC6/abraham-simpson">Abraham Simpson</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+                </div>
+                <div>
+                    <a target="_blank" href="https://icons8.com/icon/ZmqhlFRAz7gQ/bart-simpson">Bart Simpson</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+                </div>
+            </div>
         </div>
     </div>
     <div class="card-body">
         <div class="direct-chat-messages">
+            <ChatMessage
+                nameMe = {nameMe}
+                profilePicMe = {profilePicMe}
+                nameChatPartner = {nameChatPartner}
+                profilePicChatPartner = {profilePicChatPartner}
+                message={welcomeMessage.message}
+                role={welcomeMessage.role}
+                isToday={true}
+            />
 			{#each todayMessages as todayMessage}
                 <ChatMessage
                     nameMe = {nameMe}
                     profilePicMe = {profilePicMe}
                     nameChatPartner = {nameChatPartner}
                     profilePicChatPartner = {profilePicChatPartner}
-					message={todayMessage.message}
-					sentByMe={todayMessage.sentByMe}
+					message={todayMessage.messages[todayMessage.messages.length - 1].content}
+					role={todayMessage.messages[todayMessage.messages.length - 1].role}
 					isToday={true}
 				/>
             {/each}

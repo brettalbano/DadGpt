@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -13,37 +15,46 @@ import (
 // 	Model string `json:"model" default0:"gpt-3.5-turbo"`
 
 // }
+var re = regexp.MustCompile(".*(dad)+.*(joke)+|.*(joke)+.*(dad)+.*")
 
 func HaveConversation(c *fiber.Ctx) error {
 	// Get params off of request body.
 	var body struct {
-		UserId  int `json:"user_id"`
-		ConvoId int `json:"convo_id"`
-		// Messages []map[string]string
-		Request string `json:"request"`
+		UserId   int                            `json:"user_id"`
+		ConvoId  int                            `json:"convo_id"`
+		Messages []openai.ChatCompletionMessage `json:"messages"`
+		// Role    string `json:"role"`
+		//		ChatMessageRoleSystem    = "system"
+		//		ChatMessageRoleUser      = "user"
+		//		ChatMessageRoleAssistant = "assistant"
+		// Content string `json:"content"`
+		// Request string `json:"request"`
 	}
 
 	if err := c.BodyParser(&body); err != nil {
 		c.Status(fiber.StatusBadRequest)
 		return err
 	}
+	newRequest := &body.Messages[len(body.Messages)-1].Content
+
+	fmt.Printf("Body: %v", body)
 
 	// Check if body.Request contains `dad joke`, else append.
-	if !strings.Contains(strings.ToLower(body.Request), "dad joke") {
-		body.Request = strings.Join([]string{body.Request, "dad", "joke"}, " ")
+	if !re.MatchString(*newRequest) {
+		*newRequest = strings.Join([]string{*newRequest, "dad", "joke"}, " ")
 	}
 
 	// Get basic call to OpenAi and return response.
 	// Create client.
 	client := openai.NewClient(os.Getenv("OPENAIKEY"))
-	chatCompletionMessage := openai.ChatCompletionMessage{
-		Role:    openai.ChatMessageRoleUser,
-		Content: body.Request,
-	}
-	var chatCompletionMessageList []openai.ChatCompletionMessage
+	// chatCompletionMessage := openai.ChatCompletionMessage{
+	// 	Role:    openai.ChatMessageRoleUser,
+	// 	Content: body.Request,
+	// }
+	// body.Messages = append(body.Messages, chatCompletionMessage)
 	chatCompleteionRequest := openai.ChatCompletionRequest{
 		Model:    "gpt-3.5-turbo",
-		Messages: append(chatCompletionMessageList, chatCompletionMessage),
+		Messages: body.Messages,
 	}
 
 	resp, err := client.CreateChatCompletion(

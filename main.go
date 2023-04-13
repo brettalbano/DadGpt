@@ -6,6 +6,7 @@ import (
 	"DadGpt/initializers"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/template/html"
 )
 
@@ -26,6 +27,7 @@ func main() {
 	})
 
 	// Configure app
+	app.Use(cors.New())
 	app.Static("/", "./public")
 	// app.Use(middleware.RequireAuth)
 

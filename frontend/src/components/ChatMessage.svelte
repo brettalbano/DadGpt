@@ -1,16 +1,14 @@
-<script>
-	import Fa from 'svelte-fa';
-	import { faCheck, faCheckDouble } from '@fortawesome/free-solid-svg-icons';
+<script lang='ts'>
 
-    export let sentByMe;
-    export let nameChatPartner;
-    export let profilePicChatPartner;
-    export let nameMe;
-    export let profilePicMe;
-	export let message;
+    export let nameChatPartner: string;
+    export let profilePicChatPartner: string;
+    export let nameMe: string;
+    export let profilePicMe: string;
+	export let message: string;
+	export let role: string;
 
 	// This should use timestamp, but its simplified for the demo.
-	export let isToday;
+	export let isToday: boolean;
 
 
 </script>
@@ -106,10 +104,10 @@ img {
 	}
 </style>
 
-<div class="direct-chat-msg" class:right="{sentByMe}" class:left="{!sentByMe}">
+<div class="direct-chat-msg" class:right="{role=="user"}" class:left="{role=="system"}">
     <div class="direct-chat-infos clearfix">
     </div>
-    <img class="direct-chat-img" src="{sentByMe==true?profilePicMe:profilePicChatPartner}" alt="pic">
+    <img class="direct-chat-img" src="{role=="user"?profilePicMe:profilePicChatPartner}" alt="pic">
     <div class="direct-chat-text">
 		<div class="d-flex">
 			<span class="mr-auto">{message}</span>
